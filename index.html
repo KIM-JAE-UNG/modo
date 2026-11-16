@@ -8,8 +8,8 @@
 <title>모도</title>
 <meta name="description" content="친구들이랑 안 되는 날만 칠하면 다 같이 되는 날을 찾아 주는 캘린더">
 <meta property="og:type" content="website">
-<meta property="og:title" content="모도">
-<meta property="og:description" content="안 되는 날만 칠해 줘. 다 같이 되는 날은 모도가 찾아 줄게.">
+<meta property="og:title" content="모도 · 일정 맞추기 초대">
+<meta property="og:description" content="링크를 누르면 친구가 만든 일정 캘린더로 바로 들어가요. 안 되는 날만 칠하면 다 같이 되는 날을 찾아 줘요.">
 <meta property="og:image" content="https://kim-jae-ung.github.io/modo/assets/og.jpg">
 <link rel="icon" type="image/png" href="assets/favicon.png">
 <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
@@ -199,11 +199,32 @@ h3 small{font-family:var(--font-body);font-style:normal;font-weight:600;color:va
 .members-box{display:flex;flex-wrap:wrap;gap:7px}
 .foot{font-size:12px;color:var(--muted);margin:4px 0 0}
 
-/* landing */
-.landing{max-width:520px;margin:0 auto;padding:28px 16px 80px;display:flex;flex-direction:column;gap:18px}
-.hero-logo{width:min(380px,90%);height:auto;mix-blend-mode:screen;align-self:center;display:block}
-.tagline{margin:-6px 0 0;font-size:25px;line-height:1.35;text-align:center;text-wrap:balance}
+/* home */
+.home{max-width:560px;margin:0 auto;padding:20px 16px 80px;display:flex;flex-direction:column;gap:16px}
+.home-logo{width:min(290px,76%);height:auto;mix-blend-mode:screen;align-self:center;display:block}
+.tagline{margin:-8px 0 2px;font-size:20px;line-height:1.35;text-align:center;text-wrap:balance}
+.home h2{font-size:26px;margin:0}
+.home h3{font-size:16px}
+.home .sec-head{margin-bottom:0}
+.home-sec{display:flex;flex-direction:column;gap:10px}
+.find{background:var(--surface);border-radius:12px;padding:10px 12px 10px 36px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%238C93B5' stroke-width='2'%3E%3Ccircle cx='7' cy='7' r='5'/%3E%3Cpath d='M11 11l4 4'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:12px center}
+.my-list{display:flex;flex-direction:column;gap:8px}
+.my-card{display:flex;align-items:stretch;border:1px solid var(--line);border-radius:16px;background:var(--surface)}
+.my-open{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px;padding:13px 6px 13px 15px;color:var(--ink);text-decoration:none;border-radius:16px}
+.my-title{font-weight:700;font-size:17px;overflow-wrap:anywhere}
+.my-sub{font-size:13px;color:var(--muted)}
+.my-line{font-size:13px;font-weight:700;color:var(--accent-hi)}
+.my-line.todo{color:var(--warn)}
+.my-line .spark{margin-right:3px}
+.my-more{align-self:center;margin-right:4px}
+.my-empty{margin:0;padding:16px;border:1px dashed var(--line);border-radius:16px;color:var(--muted);font-size:14px}
+.back-link{align-self:flex-start;color:var(--muted);text-decoration:none;font-size:14px;font-weight:700;padding:6px 10px 6px 4px;margin:-4px 0 -12px;border-radius:9px}
+.code-box{display:flex;flex-direction:column;align-items:center;gap:2px;padding:14px;border-radius:14px;background:var(--surface-2);border:1px solid var(--line)}
+.code-big{font-family:var(--font-display);font-style:italic;font-weight:400;font-size:36px;letter-spacing:.06em;line-height:1.2;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 .land-card{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.ok-tick{color:#3DDC97;font-weight:700}
+.ghost-chip{border:1px dashed var(--line);background:transparent;color:var(--muted);cursor:pointer;font:inherit;font-size:14px}
+#totalRow .k small{display:block;font-size:12px;line-height:1.3}
 .steps{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:8px}
 .steps li{display:flex;gap:10px;align-items:baseline;font-size:14px;color:var(--muted)}
 .steps b{color:var(--ink)}
@@ -288,6 +309,7 @@ h3 small{font-family:var(--font-body);font-style:normal;font-weight:600;color:va
 </svg>
 
 <main class="app mode-mine" id="app" hidden>
+  <a class="back-link" href="./" id="homeLink">‹ 내 일정</a>
   <header class="top">
     <img class="logo" src="assets/logo.webp" alt="모도" width="130" height="76">
     <button type="button" class="me-chip" id="meChip" aria-label="나 바꾸기"><span class="dot" id="meDot"></span><span id="meName">이름 정하기</span></button>
@@ -297,7 +319,7 @@ h3 small{font-family:var(--font-body);font-style:normal;font-weight:600;color:va
       <h1 id="groupTitle" class="display grad-text">우리 일정</h1>
       <button type="button" class="icon-btn" id="editTitle" aria-label="캘린더 이름 바꾸기">✎</button>
     </div>
-    <button type="button" class="btn small" id="inviteBtn">초대 링크</button>
+    <button type="button" class="btn small" id="inviteBtn">친구 초대</button>
   </div>
   <div class="sync" id="sync" aria-live="polite">연결 중…</div>
   <div class="banners" id="banner" hidden></div>
@@ -335,11 +357,12 @@ h3 small{font-family:var(--font-body);font-style:normal;font-weight:600;color:va
       <button type="button" class="btn small" id="clearMonthBtn">이번 달 비우기</button>
     </div>
     <div class="stat-row"><span class="stat" id="statLine"></span><button type="button" class="btn small ghost" id="undoBtn">되돌리기</button></div>
+    <div id="doneBox"></div>
   </section>
 
   <section class="tools" id="toolsAll" hidden>
     <div class="legend" aria-label="색 설명">
-      <span><i class="sw all"></i>다 같이 돼요</span>
+      <span><i class="sw all"></i>다 같이 가능 (모두 다 칠하면)</span>
       <span><i class="sw some"></i>일부만 돼요</span>
       <span><i class="sw"></i>아무도 안 돼요</span>
     </div>
@@ -348,36 +371,48 @@ h3 small{font-family:var(--font-body);font-style:normal;font-weight:600;color:va
   </section>
 
   <section aria-labelledby="evHead">
-    <div class="sec-head"><h3 id="evHead" class="display">큰 일정</h3><button type="button" class="btn primary small" id="newEventBtn">+ 새 일정</button></div>
+    <div class="sec-head"><h3 id="evHead" class="display">큰 일정</h3><button type="button" class="btn primary small" id="newEventBtn">+ 큰 일정</button></div>
     <div id="eventList"></div>
   </section>
 
   <section aria-labelledby="memHead">
     <div class="sec-head"><h3 id="memHead" class="display">멤버<small id="memCount"></small></h3><button type="button" class="btn small ghost" id="manageBtn">관리</button></div>
+    <div class="kv" id="totalRow" style="margin-bottom:10px"><span class="k">총 인원 <small class="muted" style="font-weight:400">다 같이 가능한 날은 이 인원이 다 칠해야 떠요</small></span><div class="stepper"><button type="button" data-tot="-1" aria-label="총 인원 한 명 줄이기">−</button><output id="totalVal">-</output><button type="button" data-tot="1" aria-label="총 인원 한 명 늘리기">+</button></div></div>
     <div class="members-box" id="memberList"></div>
-    <p class="foot" id="footNote">링크가 있는 사람은 누구나 보고 고칠 수 있어요. 초대 링크는 친구들끼리만 나눠 주세요.</p>
+    <p class="foot" id="footNote">초대 코드나 링크가 있는 사람은 누구나 보고 고칠 수 있어요. 친구들끼리만 나눠 주세요.</p>
   </section>
 </main>
 
-<section class="landing" id="landing" hidden>
-  <img class="hero-logo" src="assets/logo.webp" alt="모도" width="380" height="222">
+<section class="home" id="home" hidden>
+  <img class="home-logo" src="assets/logo.webp" alt="모도" width="380" height="222">
   <p class="tagline display grad-text">안 되는 날만 칠해 줘.<br>다 같이 되는 날은 모도가 찾아 줄게.</p>
-  <div class="land-card">
+
+  <section class="home-sec" aria-labelledby="myHead">
+    <div class="sec-head"><h2 id="myHead" class="display">내 일정</h2><small class="muted" id="myCount"></small></div>
+    <input type="search" id="findInput" class="find" placeholder="일정 찾기 (일정 이름, 큰 일정)" autocomplete="off" aria-label="일정 찾기" hidden>
+    <div class="my-list" id="myList"></div>
+  </section>
+
+  <section class="land-card" aria-labelledby="codeHead">
+    <h3 id="codeHead">초대 코드로 들어가기</h3>
+    <div class="inline"><input id="codeInput" maxlength="200" placeholder="예: K7P3-MX2Q" autocomplete="off" autocapitalize="characters" spellcheck="false" aria-label="초대 코드"><button type="button" class="btn primary" id="codeBtn">들어가기</button></div>
+    <p class="help" style="margin:0">친구한테 받은 8자리 코드를 넣으세요. 초대 링크를 통째로 붙여 넣어도 돼요.</p>
+  </section>
+
+  <section class="land-card" aria-labelledby="newHead">
+    <h3 id="newHead">새 일정 만들기</h3>
+    <input id="newCalName" maxlength="20" placeholder="일정 이름 (예: 우리 일정, 동아리 MT)" autocomplete="off" aria-label="새 일정 이름">
+    <div class="kv"><span class="k">총 인원</span><div class="stepper"><button type="button" data-ntot="-1" aria-label="한 명 줄이기">−</button><output id="newTotal">4명</output><button type="button" data-ntot="1" aria-label="한 명 늘리기">+</button></div></div>
+    <button type="button" class="btn block" id="createCalBtn">만들기</button>
+    <p class="help" style="margin:0">만들면 초대 코드가 생겨요. 단톡방에 보내면 친구들이 바로 들어와요. 총 인원은 나중에 바꿀 수 있어요.</p>
+  </section>
+
+  <div class="land-card" id="howBox" hidden>
     <ol class="steps">
-      <li><span class="n">1</span><span><b>안 되는 날</b>을 쭉 그어서 칠해요.</span></li>
-      <li><span class="n">2</span><span><b>다 같이 보기</b>에서 모두 되는 날이 빛나요.</span></li>
+      <li><span class="n">1</span><span><b>안 되는 날</b>을 쭉 그어서 칠하고 ‘다 칠했어요’를 눌러요.</span></li>
+      <li><span class="n">2</span><span>총 인원이 다 누르면 <b>다 같이 가능한 날</b>이 빛나요.</span></li>
       <li><span class="n">3</span><span><b>큰 일정</b>은 후보 날짜를 투표로 정해요.</span></li>
     </ol>
-  </div>
-  <div class="land-card">
-    <label class="lbl" for="newCalName" style="margin-top:0">캘린더 이름</label>
-    <input id="newCalName" maxlength="20" placeholder="예: 우리 일정, 동아리 MT" autocomplete="off">
-    <button type="button" class="btn primary block" id="createCalBtn">새 캘린더 만들기</button>
-    <p class="help" style="margin:0">만들면 초대 링크가 생겨요. 단톡방에 링크만 보내면 친구들이 바로 들어와서 같이 고칠 수 있어요.</p>
-  </div>
-  <div id="recentBox" hidden>
-    <h3 class="display" style="margin-bottom:8px">최근에 연 캘린더</h3>
-    <div class="cands" id="recentList"></div>
   </div>
 </section>
 
@@ -400,6 +435,13 @@ const params = new URLSearchParams(location.search);
 const DEMO = !/^https?:$/.test(location.protocol) || params.has('demo');
 const GROUP_RE = /^[A-Za-z0-9_-]{12,64}$/;
 const hashGroup = () => { let h = ''; try { h = decodeURIComponent(location.hash.slice(1)); } catch (_) {} return GROUP_RE.test(h) ? h : null; };
+/* 초대 코드: 헷갈리는 글자(0 O 1 I L) 뺀 8자리, 보여 줄 때는 ABCD-EFGH */
+const CODE_RE = /^[ABCDEFGHJKMNPQRSTUVWXYZ23456789]{8}$/;
+const normCode = s => String(s || '').toUpperCase().replace(/[^A-Z0-9]/g, '');
+const fmtCode = c => c ? c.slice(0, 4) + '-' + c.slice(4) : '';
+const hashCode = () => { let h = ''; try { h = decodeURIComponent(location.hash.slice(1)); } catch (_) {} const c = normCode(h); return h.length <= 12 && CODE_RE.test(c) ? c : null; };
+const appUrl = () => location.href.split('#')[0].split('?')[0];
+const codeKey = g => 'modo_code:' + g;
 
 /* ---------- small helpers ---------- */
 const $ = (s, r = document) => r.querySelector(s);
@@ -461,8 +503,15 @@ const S = {
   me: null, meSeen: false, myBusy: new Set(), myDirty: false, myWriting: false, saveT: 0, undo: [],
   mode: 'mine', ym: null, selDay: null, sheet: null,
   membersReady: false, gotFresh: false, got: new Set(), note: '', pending: 0, loadT: 0,
-  evPatch: {}, evPatchT: {}, whoDismissed: false
+  evPatch: {}, evPatchT: {}, whoDismissed: false,
+  total: 0, totalT: 0, totalPending: false, inviteAfter: false
 };
+/* 총 인원: 정해 둔 값, 안 정했으면 들어온 사람 수 */
+const totalN = () => Math.max(1, S.total || S.members.size || 1);
+function checkState() {
+  const ms = [...S.members.values()], T = totalN(), D = ms.filter(x => x.done).length;
+  return { T, J: ms.length, D, all: ms.length > 0 && ms.length >= T && D === ms.length };
+}
 const meKey = () => 'modo_me:' + (S.gid || 'demo');
 
 /* ---------- 미리보기용 메모리 저장소 ---------- */
@@ -515,6 +564,26 @@ class MemCol {
 /* ---------- Supabase 공유 저장소 (초대 링크 코드별로 나뉨) ---------- */
 const tsMs = s => Date.parse(String(s).replace(/(\.\d{3})\d+/, '$1'));
 const sameRow = (a, b) => !!a && !!b && a.updated_at === b.updated_at && a.deleted === b.deleted && JSON.stringify(a.data) === JSON.stringify(b.data);
+async function rpcCall(fn, args) {
+  let r;
+  try {
+    r = await fetch(`${SUPA.url}/rest/v1/rpc/${fn}`, {
+      method: 'POST', cache: 'no-store',
+      headers: { apikey: SUPA.key, 'Content-Type': 'application/json' },
+      body: JSON.stringify(args)
+    });
+  } catch (e) { throw { code: 'unavailable', message: String((e && e.message) || e) }; }
+  if (!r.ok) {
+    const s = r.status;
+    const code = s === 401 || s === 403 ? 'not_granted' : s === 413 ? 'quota_exceeded' : s === 429 ? 'resource_exhausted'
+      : (s >= 500 || s === 404 || s === 408) ? 'unavailable' : 'invalid_argument';
+    let message = '';
+    try { message = await r.text(); } catch (_) {}
+    throw { code, message };
+  }
+  const txt = await r.text();
+  return txt ? JSON.parse(txt) : null;
+}
 class SupaDB {
   constructor(url, key, grp) {
     this.url = url.replace(/\/$/, ''); this.key = key; this.grp = grp;
@@ -759,7 +828,7 @@ function recommend(ev, n) {
 function eventStats(ev) {
   const vm = S.votes.get(ev.id) || new Map();
   const voters = sortedMembers().map(m => m.id).filter(id => vm.has(id));
-  const head = clampInt(ev.headcount, 1, 50, Math.max(1, S.members.size));
+  const head = clampInt(ev.headcount, 1, 50, totalN());
   const days = clampInt(ev.days, 1, 14, 1);
   const tally = (ev.cands || []).map(c => ({
     c, yes: voters.filter(id => vm.get(id).d.includes(c)), cal: freeFor(c, days).length
@@ -798,7 +867,7 @@ const nextEventColor = () => PALETTE[(4 + S.events.size * 3) % PALETTE.length];
 function recentGroups() {
   try {
     const v = JSON.parse(lsGet('modo_recent') || '[]');
-    return Array.isArray(v) ? v.filter(x => x && GROUP_RE.test(x.g)).slice(0, 8) : [];
+    return Array.isArray(v) ? v.filter(x => x && GROUP_RE.test(x.g)).slice(0, 30) : [];
   } catch (_) { return []; }
 }
 function rememberGroup(g, title) {
@@ -807,8 +876,15 @@ function rememberGroup(g, title) {
   if (prev && prev.t === t && Date.now() - (prev.at || 0) < 60000) return;
   const list = all.filter(x => x.g !== g);
   list.unshift({ g, t, at: Date.now() });
-  lsSet('modo_recent', JSON.stringify(list.slice(0, 8)));
+  lsSet('modo_recent', JSON.stringify(list.slice(0, 30)));
 }
+function setGroupTitle(g, t) {
+  const all = recentGroups(), x = all.find(r => r.g === g);
+  if (!x || x.t === t) return;
+  x.t = clip(t, 20);
+  lsSet('modo_recent', JSON.stringify(all));
+}
+function forgetGroup(g) { lsSet('modo_recent', JSON.stringify(recentGroups().filter(x => x.g !== g))); }
 
 /* ---------- snapshots ---------- */
 function onMembers(snap) {
@@ -817,7 +893,7 @@ function onMembers(snap) {
   for (const d of snap.docs) {
     const v = d.data();
     if (!v || typeof v.name !== 'string') continue;
-    map.set(d.id, { id: d.id, name: clip(v.name, 12) || '이름 없음', uid: typeof v.uid === 'string' ? v.uid : null, color: isHex(v.color) ? v.color : PALETTE[i % PALETTE.length], at: Number(v.at) || 0 });
+    map.set(d.id, { id: d.id, name: clip(v.name, 12) || '이름 없음', uid: typeof v.uid === 'string' ? v.uid : null, color: isHex(v.color) ? v.color : PALETTE[i % PALETTE.length], at: Number(v.at) || 0, done: v.done === true });
     i++;
   }
   S.members = map;
@@ -880,6 +956,7 @@ function onVotes(snap) {
 function onMeta(snap) {
   const v = snap.exists ? snap.data() : null;
   S.title = (v && clip(v.title, 20)) || '우리 일정';
+  if (!S.totalPending) S.total = clampInt(v && v.total, 1, 50, 0);
   document.title = S.demo ? '모도 미리보기' : `${S.title} · 모도`;
   if (S.backend === 'supa') rememberGroup(S.gid, S.title);
   scheduleRender();
@@ -904,6 +981,7 @@ function pickMe(id) {
   setMe(id);
   closeSheet();
   if (back) openSheet(back.kind, back);
+  else if (S.inviteAfter) { S.inviteAfter = false; openInvite(); }
 }
 async function join(nameInput) {
   const name = clip(nameInput.value, 12);
@@ -916,7 +994,8 @@ async function join(nameInput) {
   setMe(ref.id);
   closeSheet();
   if (back) openSheet(back.kind, back);
-  else toast(`${name}님, 안 되는 날을 칠해 주세요.`);
+  else if (S.inviteAfter) { S.inviteAfter = false; openInvite(); }
+  else toast(`${name}님, 안 되는 날을 칠하고 ‘다 칠했어요’를 눌러 주세요.`);
 }
 
 /* ---------- my busy days ---------- */
@@ -1070,24 +1149,58 @@ async function removeMember(id) {
 }
 
 /* ---------- 초대 링크 ---------- */
-function inviteUrl() { return location.href.split('#')[0].split('?')[0] + '#' + S.gid; }
-async function invite() {
-  if (S.backend !== 'supa') { toast('미리보기에서는 초대 링크가 없어요.'); return; }
-  const url = inviteUrl();
-  if (navigator.share) {
-    try { await navigator.share({ title: `${S.title} · 모도`, text: `${S.title} 날짜 맞추자! 안 되는 날만 칠해 줘.`, url }); return; }
-    catch (e) { if (e && e.name === 'AbortError') return; }
-  }
-  try { await navigator.clipboard.writeText(url); toast('초대 링크를 복사했어요. 단톡방에 붙여 넣으세요.'); }
-  catch (_) { showLinkDialog(url); }
+/* ---------- 친구 초대: 일정 이름 + 초대 코드 + 바로 들어오는 링크 ---------- */
+const inviteUrl = () => appUrl() + '#' + S.gid;
+async function getCode(g) {
+  const c = lsGet(codeKey(g));
+  if (c && CODE_RE.test(c)) return c;
+  const v = await rpcCall('modo_code', { p_grp: g });
+  if (typeof v === 'string' && CODE_RE.test(v)) { lsSet(codeKey(g), v); return v; }
+  throw { code: 'unavailable', message: 'no code' };
 }
-function showLinkDialog(url) {
+const inviteText = code => `[모도] ‘${S.title}’ 날짜 맞추자!\n안 되는 날만 칠하고 ‘다 칠했어요’ 눌러 줘.` + (code ? `\n초대 코드: ${fmtCode(code)}` : '');
+function openInvite() {
+  if (S.backend !== 'supa') { toast('미리보기에서는 초대할 수 없어요.'); return; }
+  openSheet('invite');
+}
+function buildInvite() {
+  body().innerHTML = `
+    <div class="sh-head"><h3 id="sheetTitle">친구 초대</h3>${closeBtn}</div>
+    <p class="hint" style="margin:0">‘${esc(S.title)}’에 친구를 불러요. 링크를 누르거나 첫 화면에서 코드를 넣으면 이 일정으로 바로 들어와요.</p>
+    <div class="code-box"><span class="lbl" style="margin:0">초대 코드</span><b class="code-big" id="invCode">····-····</b></div>
+    <button type="button" class="btn primary block" data-act="ishare">단톡방에 초대 보내기</button>
+    <div class="row"><button type="button" class="btn small" data-act="icopy">초대 메시지 복사</button><button type="button" class="btn small" data-act="icode">코드만 복사</button></div>
+    <p class="help" style="margin:0">보내는 메시지에 일정 이름, 초대 코드, 링크가 같이 들어가요. 미리보기 카드는 모든 링크가 ‘모도 · 일정 맞추기 초대’로 똑같이 보여요.</p>`;
+  getCode(S.gid).then(c => {
+    if (S.sheet && S.sheet.kind === 'invite') S.sheet.code = c;
+    const el = $('#invCode'); if (el) el.textContent = fmtCode(c);
+  }).catch(() => { const el = $('#invCode'); if (el) el.textContent = '불러오지 못했어요'; });
+}
+async function copyText(text, okMsg) {
+  try { await navigator.clipboard.writeText(text); toast(okMsg); }
+  catch (_) { showCopyDialog(text); }
+}
+function showCopyDialog(text) {
   const root = $('#confirmRoot');
-  root.innerHTML = `<div class="backdrop" data-r="0"></div><div class="dialog" role="dialog" aria-modal="true" aria-labelledby="lnkT"><p id="lnkT">아래 링크를 복사해서 친구들에게 보내 주세요.</p><input id="lnkI" readonly value="${esc(url)}" aria-label="초대 링크"><div class="row end" style="margin-top:12px"><button type="button" class="btn primary" data-r="0">닫기</button></div></div>`;
+  root.innerHTML = `<div class="backdrop" data-r="0"></div><div class="dialog" role="dialog" aria-modal="true" aria-labelledby="lnkT"><p id="lnkT">아래 내용을 길게 눌러 복사해서 보내 주세요.</p><textarea id="lnkI" readonly rows="5" aria-label="보낼 내용">${esc(text)}</textarea><div class="row end" style="margin-top:12px"><button type="button" class="btn primary" data-r="0">닫기</button></div></div>`;
   root.hidden = false;
   root.onclick = e => { if (e.target.closest('[data-r]')) { root.hidden = true; root.innerHTML = ''; root.onclick = null; } };
   const i = $('#lnkI');
   i.focus(); i.select();
+}
+async function inviteAction(kind) {
+  let code = (S.sheet && S.sheet.code) || lsGet(codeKey(S.gid)) || '';
+  if (!code) { try { code = await getCode(S.gid); } catch (_) {} }
+  const url = inviteUrl();
+  if (kind === 'icode') {
+    if (!code) { toast('코드를 아직 못 불러왔어요. 잠깐 뒤에 다시 해 주세요.'); return; }
+    return copyText(fmtCode(code), '초대 코드를 복사했어요.');
+  }
+  if (kind === 'ishare' && navigator.share) {
+    try { await navigator.share({ title: `${S.title} · 모도`, text: inviteText(code), url }); return; }
+    catch (e) { if (e && e.name === 'AbortError') return; }
+  }
+  return copyText(inviteText(code) + '\n' + url, '초대 메시지를 복사했어요. 단톡방에 붙여 넣으세요.');
 }
 
 /* ---------- rendering ---------- */
@@ -1162,7 +1275,7 @@ function renderMonth() {
   $('#monthLabel').textContent = `${y}년 ${m + 1}월`;
   paintCells();
 }
-function cellCtx() { return { today: todayStr(), ids: [...S.members.keys()], spans: doneSpans() }; }
+function cellCtx() { return { today: todayStr(), ids: [...S.members.keys()], spans: doneSpans(), chk: checkState() }; }
 function paintCell(cell, ctx) {
   ctx = ctx || cellCtx();
   const ds = cell.dataset.date, wd = dow(ds), hol = HOL[ds];
@@ -1187,9 +1300,11 @@ function paintCell(cell, ctx) {
     if (N && ds >= ctx.today) {
       const busyIds = ctx.ids.filter(id => getBusy(id).has(ds));
       const free = N - busyIds.length;
-      cls.push('h' + heatLevel(free, N));
+      // 다 같이 '가능'(가장 밝은 칸)은 총 인원이 다 들어와서 모두 '다 칠했어요'를 눌렀을 때만
+      const lvl = busyIds.length ? heatLevel(free, N) : (ctx.chk.all ? 4 : 3);
+      cls.push('h' + lvl);
       subHtml = busyIds.slice(0, 4).map(id => `<i style="background:${memberColor(id)}"></i>`).join('') + (busyIds.length > 4 ? `<b>+${busyIds.length - 4}</b>` : '');
-      label += `, ${free}명 돼요, ${busyIds.length}명 안 돼요`;
+      label += `, ${free}명 돼요, ${busyIds.length}명 안 돼요` + (lvl === 4 ? ', 다 같이 가능' : '');
     }
     if (S.selDay === ds) cls.push('sel');
   }
@@ -1226,32 +1341,48 @@ function renderTools() {
     $('#weekdaysBtn').disabled = off;
     $('#clearMonthBtn').disabled = off;
     $('#undoBtn').disabled = off || !S.undo.length;
+    const me = S.me && S.members.get(S.me);
+    setHtml('#doneBox', !me || S.readOnly ? ''
+      : me.done
+        ? `<div class="voted"><span>${SPARK} 다 칠했어요 · 고치면 바로 반영돼요</span><button type="button" class="btn ghost small" data-done="0">완료 취소</button></div>`
+        : '<button type="button" class="btn primary block" data-done="1">안 되는 날 다 칠했어요</button><p class="help" style="margin:6px 0 0">총 인원이 다 눌러야 ‘다 같이 가능한 날’이 떠요.</p>');
   } else {
     renderMonthSummary();
     renderDayDetail();
   }
 }
 function renderMonthSummary() {
-  const box = $('#monthSummary'), N = S.members.size, { m } = S.ym, t = todayStr();
-  let html;
-  const future = monthDates().filter(d => d >= t);
+  const box = $('#monthSummary'), N = S.members.size, { m } = S.ym, t = todayStr(), chk = checkState();
+  let html = '';
   if (!N) html = '<p class="sum-title muted">아직 멤버가 없어요.</p>';
-  else if (!future.length) html = '<p class="sum-title muted">지난 달이에요.</p>';
   else {
-    const all = [], byFree = new Map();
-    for (const ds of future) {
-      const free = N - [...S.members.keys()].filter(id => getBusy(id).has(ds)).length;
-      if (free === N) all.push(ds);
-      if (!byFree.has(free)) byFree.set(free, []);
-      byFree.get(free).push(ds);
-    }
-    const chip = ds => `<button type="button" class="chip${ds === S.selDay ? ' on' : ''}" data-day="${ds}">${esc(fmtMD(ds))}</button>`;
-    if (all.length) html = `<p class="sum-title">${SPARK} ${m + 1}월에 <b>다 같이 되는 날 ${all.length}일</b></p><div class="chips">${all.map(chip).join('')}</div>`;
+    const notDone = sortedMembers().filter(x => !x.done), missing = Math.max(0, chk.T - chk.J);
+    const waits = [notDone.length ? `아직 안 누른 사람: ${notDone.map(x => esc(x.name)).join(', ')}` : '', missing ? `아직 안 들어온 사람 ${missing}명` : ''].filter(Boolean).join(' · ');
+    html += chk.all
+      ? `<div class="status done"><div class="st-top"><span class="pill done">${SPARK}모두 다 칠했어요</span><b>${chk.D}/${chk.T}명</b></div></div>`
+      : `<div class="status"><div class="st-top"><span class="pill wait">칠하는 중</span><b>${chk.D}/${chk.T}명 다 칠함</b></div><span class="prog" aria-hidden="true"><i style="width:${Math.min(100, Math.round(chk.D / chk.T * 100))}%"></i></span>${waits ? `<p class="muted">${waits}</p>` : ''}</div>`;
+    const future = monthDates().filter(d => d >= t);
+    if (!future.length) html += '<p class="sum-title muted">지난 달이에요.</p>';
     else {
-      const top = Math.max(...byFree.keys());
-      html = top > 0
-        ? `<p class="sum-title">${m + 1}월엔 다 같이 되는 날이 없어요. 제일 많이 되는 날 <b>${top}/${N}명</b></p><div class="chips">${byFree.get(top).slice(0, 12).map(chip).join('')}</div>`
-        : `<p class="sum-title muted">${m + 1}월엔 남은 날 중 되는 날이 없어요.</p>`;
+      const clear = [], byFree = new Map();
+      for (const ds of future) {
+        const free = N - [...S.members.keys()].filter(id => getBusy(id).has(ds)).length;
+        if (free === N) clear.push(ds);
+        if (!byFree.has(free)) byFree.set(free, []);
+        byFree.get(free).push(ds);
+      }
+      const chip = ds => `<button type="button" class="chip${ds === S.selDay ? ' on' : ''}" data-day="${ds}">${esc(fmtMD(ds))}</button>`;
+      if (chk.all && clear.length) html += `<p class="sum-title">${SPARK} ${m + 1}월에 <b>다 같이 가능한 날 ${clear.length}일</b></p><div class="chips">${clear.map(chip).join('')}</div>`;
+      else if (chk.all) {
+        const top = Math.max(...byFree.keys());
+        html += top > 0
+          ? `<p class="sum-title">${m + 1}월엔 다 같이 가능한 날이 없어요. 제일 많이 되는 날 <b>${top}/${N}명</b></p><div class="chips">${byFree.get(top).slice(0, 12).map(chip).join('')}</div>`
+          : `<p class="sum-title muted">${m + 1}월엔 남은 날 중 되는 날이 없어요.</p>`;
+      } else {
+        html += clear.length
+          ? `<p class="sum-title">지금까지 칠한 걸로는 ${m + 1}월에 <b>${clear.length}일</b>이 다 비어 있어요. 모두 ‘다 칠했어요’를 누르면 가능한 날로 확정돼요.</p><div class="chips">${clear.map(chip).join('')}</div>`
+          : `<p class="sum-title muted">지금까지 칠한 걸로는 ${m + 1}월에 다 같이 비는 날이 없어요.</p>`;
+      }
     }
   }
   if (box._h !== html) { box.innerHTML = html; box._h = html; }
@@ -1309,12 +1440,38 @@ function renderEvents() {
   if (box._h !== html) { box.innerHTML = html; box._h = html; }
 }
 function renderMembers() {
-  $('#memCount').textContent = S.members.size ? `${S.members.size}명` : '';
+  const chk = checkState(), missing = Math.max(0, chk.T - chk.J);
+  $('#memCount').textContent = S.got.has('members') ? `${chk.J}/${chk.T}명` : '';
+  $('#totalVal').textContent = `${chk.T}명`;
+  for (const b of document.querySelectorAll('#totalRow button')) b.disabled = S.readOnly || !S.db || (b.dataset.tot === '-1' && chk.T <= 1);
   const box = $('#memberList');
-  const html = !S.got.has('members') ? '<p class="hint">불러오는 중…</p>' : S.members.size
-    ? sortedMembers().map(m => `<span class="pchip big"><i style="background:${m.color}"></i>${esc(m.name)}${m.id === S.me ? ' (나)' : ''}</span>`).join('')
-    : '<p class="hint">아직 아무도 없어요. 이름을 정하면 첫 멤버가 돼요.</p>';
+  const html = !S.got.has('members') ? '<p class="hint">불러오는 중…</p>'
+    : (sortedMembers().map(m => `<span class="pchip big"><i style="background:${m.color}"></i>${esc(m.name)}${m.id === S.me ? ' (나)' : ''}${m.done ? ' <b class="ok-tick">✓</b>' : ''}</span>`).join('')
+      + (missing ? `<button type="button" class="pchip big ghost-chip" data-act-invite>+${missing}명 아직 안 들어왔어요</button>` : '')
+      || '<p class="hint">아직 아무도 없어요. 이름을 정하면 첫 멤버가 돼요.</p>');
   if (box._h !== html) { box.innerHTML = html; box._h = html; }
+}
+function setTotal(n) {
+  if (S.readOnly || !S.db) return;
+  n = Math.min(50, Math.max(1, n));
+  S.total = n; S.totalPending = true; scheduleRender();
+  clearTimeout(S.totalT);
+  S.totalT = setTimeout(async () => {
+    try { await write('meta/info', () => S.db.doc('meta/info').update({ total: n })); } catch (_) {}
+    S.totalPending = false;
+  }, 500);
+}
+async function setDone(v) {
+  const m = S.me && S.members.get(S.me);
+  if (!m || S.readOnly) return;
+  flushBusy();
+  try {
+    await write('members/' + S.me, () => S.db.doc('members/' + S.me).update({ done: v, doneAt: Date.now() }));
+  } catch (_) { return; }
+  if (v) {
+    const c = checkState();
+    toast(c.all ? '모두 다 칠했어요! 다 같이 보기에서 가능한 날을 확인하세요.' : `다 칠했어요. 지금 ${c.D}/${c.T}명 끝났어요.`);
+  }
 }
 
 /* ---------- sheets ---------- */
@@ -1328,6 +1485,7 @@ function openSheet(kind, data) {
   else if (kind === 'new') buildNew();
   else if (kind === 'event') buildEvent();
   else if (kind === 'members') buildMembers();
+  else if (kind === 'invite') buildInvite();
   const f = body().querySelector('[data-autofocus]');
   if (f && !('ontouchstart' in window)) f.focus();
 }
@@ -1373,7 +1531,7 @@ function updateWhoList() {
 function buildNew() {
   const t = todayStr();
   S.sheet.days = 1;
-  S.sheet.head = Math.max(2, S.members.size || 2);
+  S.sheet.head = Math.max(2, totalN());
   body().innerHTML = `
     <div class="sh-head"><h3 id="sheetTitle" class="display">새 큰 일정</h3>${closeBtn}</div>
     <label class="lbl" for="nTitle">무슨 일정이에요?</label>
@@ -1607,7 +1765,10 @@ $('#undoBtn').addEventListener('click', undo);
 $('#needMeBtn').addEventListener('click', () => openSheet('who'));
 $('#meChip').addEventListener('click', () => { if (S.db && !S.readOnly) openSheet('who'); });
 $('#manageBtn').addEventListener('click', () => openSheet('members'));
-$('#inviteBtn').addEventListener('click', invite);
+$('#inviteBtn').addEventListener('click', openInvite);
+$('#totalRow').addEventListener('click', e => { const b = e.target.closest('[data-tot]'); if (b) setTotal(totalN() + Number(b.dataset.tot)); });
+$('#doneBox').addEventListener('click', e => { const b = e.target.closest('[data-done]'); if (b) setDone(b.dataset.done === '1'); });
+$('#memberList').addEventListener('click', e => { if (e.target.closest('[data-act-invite]')) openInvite(); });
 $('#newEventBtn').addEventListener('click', () => { if (!S.me) openSheet('who', { back: { kind: 'new' } }); else openSheet('new'); });
 $('#editTitle').addEventListener('click', () => {
   if (S.readOnly || !S.db) return;
@@ -1655,6 +1816,7 @@ sheetRoot.addEventListener('click', e => {
     case 'join': join($('#newName')); break;
     case 'create': createEvent(); break;
     case 'madd': addMember($('#mNew')); break;
+    case 'ishare': case 'icopy': case 'icode': inviteAction(act.dataset.act); break;
     case 'who': openSheet('who', { back: { kind: 'event', id: S.sheet.id } }); break;
     case 'vote': if (ev) submitVote(ev); break;
     case 'unvote': if (ev) cancelVote(ev); break;
@@ -1728,35 +1890,155 @@ const flushAll = () => { flushBusy(); flushAllEvents(); };
 document.addEventListener('visibilitychange', () => { if (document.hidden) flushAll(); });
 window.addEventListener('pagehide', flushAll);
 
-/* ---------- 첫 화면 (새 캘린더 만들기) ---------- */
-function showLanding() {
-  $('#landing').hidden = false;
+/* ---------- 홈: 내 일정 · 일정 찾기 · 초대 코드로 들어가기 · 새 일정 만들기 ---------- */
+const H = { sum: new Map(), q: '', loading: false, newTotal: 4 };
+function summarize(rows, g) {
+  const live = (rows || []).filter(r => r && !r.deleted && r.data && typeof r.data === 'object');
+  const meta = live.find(r => r.col === 'meta' && r.id === 'info');
+  const members = live.filter(r => r.col === 'members' && typeof r.data.name === 'string');
+  const ids = new Set(members.map(r => r.id));
+  const busy = new Map(), votes = new Map();
+  for (const r of live) {
+    if (r.col === 'busy' && ids.has(r.id)) busy.set(r.id, new Set(Array.isArray(r.data.d) ? r.data.d : []));
+    if (r.col === 'votes' && typeof r.data.e === 'string' && ids.has(r.data.m)) {
+      if (!votes.has(r.data.e)) votes.set(r.data.e, new Map());
+      votes.get(r.data.e).set(r.data.m, Array.isArray(r.data.d) ? r.data.d : []);
+    }
+  }
+  const T = Math.max(1, clampInt(meta && meta.data.total, 1, 50, 0) || ids.size || 1);
+  const me = lsGet('modo_me:' + g), meIn = !!me && ids.has(me), t = todayStr();
+  const freeCount = (s, days) => {
+    let n = 0;
+    for (const id of ids) { const b = busy.get(id) || EMPTY; let ok = true; for (let k = 0; k < days; k++) if (b.has(addDays(s, k))) { ok = false; break; } if (ok) n++; }
+    return n;
+  };
+  const events = live.filter(r => r.col === 'events').map(r => {
+    const e = r.data, days = clampInt(e.days, 1, 14, 1), head = clampInt(e.headcount, 1, 50, T);
+    const vm = votes.get(r.id) || new Map();
+    const cands = Array.isArray(e.cands) ? [...new Set(e.cands.filter(isYMD))] : [];
+    const tally = cands.map(c => ({ c, yes: [...vm.values()].filter(d => d.includes(c)).length, cal: freeCount(c, days) }))
+      .sort((a, b) => b.yes - a.yes || b.cal - a.cal || (a.c < b.c ? -1 : 1));
+    const done = vm.size >= head, best = tally[0];
+    return { title: clip(e.title, 30) || '이름 없는 일정', days, done, final: done && best && best.yes > 0 ? best.c : null, mine: meIn && vm.has(me) };
+  });
+  const D = members.filter(r => r.data.done === true).length;
+  return {
+    ok: !!meta, title: meta ? (clip(meta.data.title, 20) || '우리 일정') : null, T, J: ids.size, D,
+    all: ids.size > 0 && ids.size >= T && D === ids.size,
+    meDone: meIn && members.some(r => r.id === me && r.data.done === true), meIn,
+    events, todo: meIn ? events.filter(e => !e.done && !e.mine).length : 0,
+    next: events.filter(e => e.final && addDays(e.final, e.days - 1) >= t).sort((a, b) => a.final < b.final ? -1 : 1)[0] || null
+  };
+}
+const squash = s => String(s || '').toLowerCase().replace(/\s+/g, '');
+function renderHome() {
+  const list = recentGroups(), q = squash(H.q);
+  $('#myCount').textContent = list.length ? `${list.length}개` : '';
+  $('#findInput').hidden = !list.length;
+  $('#howBox').hidden = !!list.length;
+  let html;
+  if (!list.length) html = '<p class="my-empty">아직 들어간 일정이 없어요. 친구한테 초대 코드를 받았으면 아래에 넣고, 처음이면 새로 만들어요.</p>';
+  else {
+    const rows = list.map(r => ({ r, s: H.sum.get(r.g) }));
+    const shown = !q ? rows : rows.filter(({ r, s }) => squash((s && s.title) || r.t).includes(q) || (s && s.events && s.events.some(e => squash(e.title).includes(q))));
+    if (!shown.length) html = `<p class="my-empty">‘${esc(H.q.trim())}’ 이름이 들어간 일정이 내 일정에 없어요. 친구가 만든 일정이면 아래에 초대 코드를 넣어 주세요.</p>`;
+    else html = shown.map(({ r, s }) => {
+      const title = (s && s.title) || r.t || '이름 없는 일정';
+      let sub, lines = '';
+      if (!s) sub = '불러오는 중…';
+      else if (s.err) sub = '지금은 정보를 못 불러왔어요';
+      else if (!s.ok) sub = '지워졌거나 없는 일정이에요';
+      else {
+        sub = `멤버 ${s.J}/${s.T}명 · 큰 일정 ${s.events.length}개`;
+        const hits = q ? s.events.filter(e => squash(e.title).includes(q)) : [];
+        if (hits.length) lines += `<span class="my-line">큰 일정: ${hits.slice(0, 3).map(e => esc(e.title)).join(', ')}</span>`;
+        lines += s.all ? `<span class="my-line">${SPARK}모두 다 칠했어요</span>`
+          : `<span class="my-line todo">다 칠한 사람 ${s.D}/${s.T}명${s.meIn && !s.meDone ? ' · 나도 아직이에요' : ''}</span>`;
+        if (s.todo) lines += `<span class="my-line todo">내 투표 기다리는 큰 일정 ${s.todo}개</span>`;
+        else if (s.next) lines += `<span class="my-line">${SPARK}${esc(fmtWin(s.next.final, s.next.days))} ${esc(s.next.title)}</span>`;
+      }
+      return `<div class="my-card"><a class="my-open" href="#${r.g}"><span class="my-title">${esc(title)}</span><span class="my-sub">${sub}</span>${lines}</a><button type="button" class="icon-btn my-more" data-forget="${r.g}" aria-label="${esc(title)} 내 일정에서 빼기">⋯</button></div>`;
+    }).join('');
+  }
+  const box = $('#myList');
+  if (box._h !== html) { box.innerHTML = html; box._h = html; }
+  $('#newTotal').textContent = `${H.newTotal}명`;
+}
+async function loadSummaries() {
+  if (H.loading) return;
+  H.loading = true;
+  await Promise.all(recentGroups().slice(0, 20).map(async r => {
+    try {
+      const s = summarize(await rpcCall('modo_pull', { p_grp: r.g, p_since: null }), r.g);
+      H.sum.set(r.g, s);
+      if (s.ok && s.title) setGroupTitle(r.g, s.title);
+    } catch (_) { if (!H.sum.has(r.g)) H.sum.set(r.g, { err: true }); }
+    renderHome();
+  }));
+  H.loading = false;
+}
+function showHome() {
+  $('#home').hidden = false;
   $('#app').hidden = true;
   document.title = '모도';
-  const list = recentGroups();
-  $('#recentBox').hidden = !list.length;
-  $('#recentList').innerHTML = list.map(r => {
-    const d = new Date(r.at || Date.now());
-    return `<a class="recent-item" href="#${r.g}"><span>${esc(r.t || '이름 없는 캘린더')}</span><small>${d.getMonth() + 1}/${d.getDate()}</small></a>`;
-  }).join('');
+  renderHome();
+  loadSummaries();
+}
+async function joinByCode() {
+  const inp = $('#codeInput'), btn = $('#codeBtn'), raw = inp.value.trim();
+  if (!raw) { inp.focus(); toast('초대 코드를 넣어 주세요.'); return; }
+  const tail = raw.includes('#') ? raw.slice(raw.lastIndexOf('#') + 1).trim() : raw;
+  if (GROUP_RE.test(tail)) { location.hash = tail; return; }
+  const code = normCode(tail);
+  if (!CODE_RE.test(code)) { toast('초대 코드는 영어와 숫자 8자리예요. 다시 확인해 주세요.'); return; }
+  btn.disabled = true;
+  try {
+    const rows = await rpcCall('modo_join', { p_code: code });
+    const hit = Array.isArray(rows) && rows[0];
+    if (!hit || !GROUP_RE.test(hit.grp)) { toast('그런 초대 코드가 없어요. 다시 확인해 주세요.'); return; }
+    lsSet(codeKey(hit.grp), code);
+    rememberGroup(hit.grp, hit.title);
+    location.hash = hit.grp;
+  } catch (_) {
+    toast('연결이 안 돼요. 인터넷 연결을 확인해 주세요.');
+  } finally { btn.disabled = false; }
 }
 async function createCalendar() {
   const btn = $('#createCalBtn');
-  const name = clip($('#newCalName').value, 20) || '우리 일정';
+  const name = clip($('#newCalName').value, 20);
+  if (!name) { $('#newCalName').focus(); toast('일정 이름을 적어 주세요.'); return; }
   const g = newGroupId();
   btn.disabled = true;
   try {
-    await new SupaDB(SUPA.url, SUPA.key, g).rpc('modo_put', { p_grp: g, p_col: 'meta', p_id: 'info', p_data: { title: name }, p_deleted: false });
+    await rpcCall('modo_put', { p_grp: g, p_col: 'meta', p_id: 'info', p_data: { title: name, total: H.newTotal }, p_deleted: false });
   } catch (_) {
     btn.disabled = false;
     toast('만들지 못했어요. 인터넷 연결을 확인해 주세요.');
     return;
   }
+  try { await getCode(g); } catch (_) {}
   rememberGroup(g, name);
+  try { sessionStorage.setItem('modo_new', g); } catch (_) {}
   location.hash = g;
 }
 $('#createCalBtn').addEventListener('click', createCalendar);
 $('#newCalName').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.isComposing) createCalendar(); });
+$('#codeBtn').addEventListener('click', joinByCode);
+$('#codeInput').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.isComposing) joinByCode(); });
+$('#findInput').addEventListener('input', e => { H.q = e.target.value; renderHome(); });
+$('#home').addEventListener('click', e => {
+  const b = e.target.closest('[data-ntot]');
+  if (b) { H.newTotal = Math.min(50, Math.max(1, H.newTotal + Number(b.dataset.ntot))); renderHome(); }
+});
+$('#myList').addEventListener('click', async e => {
+  const b = e.target.closest('[data-forget]');
+  if (!b) return;
+  const g = b.dataset.forget, r = recentGroups().find(x => x.g === g), s = H.sum.get(g);
+  const name = (s && s.title) || (r && r.t) || '이 일정';
+  if (!await askConfirm(`‘${name}’, 내 일정 목록에서 뺄까요? 일정은 그대로 남고 초대 코드로 다시 들어올 수 있어요.`, '빼기')) return;
+  forgetGroup(g); H.sum.delete(g); renderHome();
+});
+document.addEventListener('visibilitychange', () => { if (!document.hidden && !$('#home').hidden) loadSummaries(); });
 window.addEventListener('hashchange', () => location.reload());
 
 /* ---------- start ---------- */
@@ -1798,6 +2080,9 @@ function seedDemo(mem) {
   const s1 = sat, s2 = addDays(sat, 7), s3 = addDays(sat, 14), s4 = addDays(sat, 21), s5 = addDays(sat, 28);
   const free = (id, ...ds) => { busy[id] = busy[id].filter(x => !ds.includes(x)); };
   free('demo-a', s1, s2); free('demo-b', s2); free('demo-c', s2, s3); free('demo-me', s2);
+  put('meta/info', { title: '우리 일정', total: 4 });
+  put('members/demo-a', { name: '민지', color: PALETTE[0], uid: null, at: 2, done: true });
+  put('members/demo-b', { name: '준호', color: PALETTE[2], uid: null, at: 3, done: true });
   put('events/demo-ev1', { title: '송년회', start: t, end: addDays(t, 35), days: 1, headcount: 3, cands: [s1, s2, s3], memo: '서면 쪽, 1인 3만 원 안쪽', color: PALETTE[5], by: 'demo-a', at: 1 });
   put('votes/demo-ev1__demo-a', { e: 'demo-ev1', m: 'demo-a', d: [s1, s2], at: 1 });
   put('votes/demo-ev1__demo-b', { e: 'demo-ev1', m: 'demo-b', d: [s2], at: 2 });
@@ -1809,27 +2094,13 @@ function seedDemo(mem) {
   for (const id of Object.keys(busy)) put('busy/' + id, { d: busy[id], at: 1 });
 }
 function showApp() {
-  $('#landing').hidden = true;
+  $('#home').hidden = true;
   $('#app').hidden = false;
   setMode('mine');
   renderMonth();
   renderAll();
 }
-function init() {
-  const d = new Date();
-  S.ym = { y: d.getFullYear(), m: d.getMonth() };
-  if (DEMO) {
-    S.demo = true; S.backend = 'demo';
-    const mem = new MemDB();
-    seedDemo(mem);
-    S.db = mem; S.me = 'demo-me';
-    window.__modo = { S, recommend, eventStats };
-    showApp();
-    subscribeAll();
-    return;
-  }
-  const g = hashGroup();
-  if (!g) { showLanding(); return; }
+function openGroup(g) {
   S.gid = g; S.backend = 'supa';
   S.db = new SupaDB(SUPA.url, SUPA.key, g);
   S.db.onStatus = ok => {
@@ -1838,10 +2109,52 @@ function init() {
     if (!ok && S.gotFresh) S.note = '연결이 잠깐 끊겼어요. 다시 연결하는 중이에요.';
     scheduleRender();
   };
-  if (params.has('test')) window.__modo = { S, recommend, eventStats };
+  if (params.has('test')) window.__modo = { S, recommend, eventStats, checkState };
   rememberGroup(g);
   showApp();
   subscribeAll();
+  // 방금 만든 일정이면: 이름 정한 뒤 바로 초대 화면
+  let fresh = null;
+  try { fresh = sessionStorage.getItem('modo_new'); if (fresh === g) sessionStorage.removeItem('modo_new'); } catch (_) {}
+  if (fresh === g) {
+    S.inviteAfter = true;
+    setTimeout(() => { if (S.inviteAfter && !S.sheet && S.me) { S.inviteAfter = false; openInvite(); } }, 1500);
+  }
+}
+async function init() {
+  const d = new Date();
+  S.ym = { y: d.getFullYear(), m: d.getMonth() };
+  if (DEMO) {
+    S.demo = true; S.backend = 'demo';
+    const mem = new MemDB();
+    seedDemo(mem);
+    S.db = mem; S.me = 'demo-me';
+    window.__modo = { S, recommend, eventStats, checkState };
+    showApp();
+    subscribeAll();
+    return;
+  }
+  const g = hashGroup();
+  if (g) { openGroup(g); return; }
+  const c = hashCode();
+  if (c) {
+    // 코드로 된 초대 링크 (…/modo/#ABCD-EFGH)
+    try {
+      const rows = await rpcCall('modo_join', { p_code: c });
+      const hit = Array.isArray(rows) && rows[0];
+      if (hit && GROUP_RE.test(hit.grp)) {
+        lsSet(codeKey(hit.grp), c);
+        history.replaceState(null, '', appUrl() + '#' + hit.grp);
+        openGroup(hit.grp);
+        return;
+      }
+    } catch (_) {}
+    history.replaceState(null, '', appUrl());
+    showHome();
+    toast('초대 코드로 일정을 못 찾았어요. 코드를 다시 확인해 주세요.');
+    return;
+  }
+  showHome();
 }
 init();
 })();

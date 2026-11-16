@@ -90,3 +90,88 @@ grant execute on function public.modo_use_group(text) to anon, authenticated;
 grant execute on function public.modo_pull(text, timestamptz) to anon, authenticated;
 grant execute on function public.modo_put(text, text, text, jsonb, boolean) to anon, authenticated;
 grant execute on function public.modo_patch(text, text, text, jsonb) to anon, authenticated;
+
+-- ---------------------------------------------------------------
+-- 초대 코드: 손으로 칠 수 있는 8자리 코드 (그룹 비밀 id와 1:1)
+-- 헷갈리는 글자(0 O 1 I L)는 안 씀. 화면에는 ABCD-EFGH로 보여 줌.
+create table public.modo_codes (
+  code text primary key,
+  grp text not null unique,
+  created_at timestamptz not null default now(),
+  constraint modo_codes_code_ok check (code ~ '^[ABCDEFGHJKMNPQRSTUVWXYZ23456789]{8}$'),
+  constraint modo_codes_grp_ok check (grp ~ '^[A-Za-z0-9_-]{12,64}$')
+);
+
+create or replace function public.modo_cur_code() returns text language sql stable set search_path = '' as $$
+  select nullif(current_setting('modo.code', true), '');
+$$;
+
+alter table public.modo_codes enable row level security;
+create policy modo_codes_select on public.modo_codes for select to anon, authenticated
+  using (code = (select public.modo_cur_code()) or grp = (select public.modo_cur_group()));
+create policy modo_codes_insert on public.modo_codes for insert to anon, authenticated
+  with check (grp = (select public.modo_cur_group()));
+revoke all on table public.modo_codes from anon, authenticated;
+grant select, insert on table public.modo_codes to anon, authenticated;
+
+-- 그룹의 초대 코드 (없으면 새로 만듦). 그룹 id를 아는 사람만 부를 수 있음.
+create or replace function public.modo_code(p_grp text) returns text
+language plpgsql volatile set search_path = '' as $$
+declare
+  v_code text;
+  v_alpha constant text := 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+  v_bytes bytea;
+  v_try int := 0;
+begin
+  perform public.modo_use_group(p_grp);
+  select c.code into v_code from public.modo_codes c where c.grp = p_grp;
+  if v_code is not null then return v_code; end if;
+  if not exists (select 1 from public.modo_docs d where d.grp = p_grp and d.col = 'meta' and d.id = 'info' and not d.deleted) then
+    raise exception 'unknown group' using errcode = '22023';
+  end if;
+  loop
+    v_try := v_try + 1;
+    if v_try > 20 then raise exception 'could not make a code' using errcode = '55000'; end if;
+    v_bytes := extensions.gen_random_bytes(8);
+    v_code := '';
+    for i in 0..7 loop
+      v_code := v_code || substr(v_alpha, (get_byte(v_bytes, i) % 31) + 1, 1);
+    end loop;
+    insert into public.modo_codes (code, grp) values (v_code, p_grp) on conflict do nothing;
+    if found then return v_code; end if;
+    select c.code into v_code from public.modo_codes c where c.grp = p_grp;
+    if v_code is not null then return v_code; end if;
+  end loop;
+end;
+$$;
+
+-- 초대 코드로 그룹 찾기: 코드를 정확히 아는 사람만 그 그룹 id와 이름을 받음
+create or replace function public.modo_join(p_code text)
+returns table (grp text, title text)
+language plpgsql volatile set search_path = '' as $$
+#variable_conflict use_column
+declare
+  v_code text;
+  v_grp text;
+begin
+  v_code := upper(regexp_replace(coalesce(p_code, ''), '[^A-Za-z0-9]', '', 'g'));
+  if v_code !~ '^[ABCDEFGHJKMNPQRSTUVWXYZ23456789]{8}$' then
+    return;
+  end if;
+  perform set_config('modo.code', v_code, true);
+  select c.grp into v_grp from public.modo_codes c where c.code = v_code;
+  if v_grp is null then
+    return;
+  end if;
+  perform public.modo_use_group(v_grp);
+  return query
+    select v_grp, coalesce(nullif(d.data ->> 'title', ''), '우리 일정')
+      from (select 1) as one
+      left join public.modo_docs d on d.grp = v_grp and d.col = 'meta' and d.id = 'info' and not d.deleted;
+end;
+$$;
+
+revoke all on function public.modo_code(text) from public;
+revoke all on function public.modo_join(text) from public;
+grant execute on function public.modo_code(text) to anon, authenticated;
+grant execute on function public.modo_join(text) to anon, authenticated;
